@@ -26,8 +26,8 @@ const displayPhones = (phones) => {
         <div class="card p-2">
             <img src="${phone.image}" class="card-img-top mx-auto" style="width: 10rem; alt="..."/>
             <div class="card-body  mx-auto">
-                <h5 class="card-title">${phone.brand}</h5>
-                <p class="card-text">${phone.phone_name}</p>
+                <h5 class="card-title text-secondary">${phone.phone_name}</h5>
+                <h6 class="card-text text-secondary">${phone.brand}</h6>
             </div>
             <button onclick="searchPhonesDetails()" class="btn btn-outline-primary" type="button" id="details-button">
                Description
