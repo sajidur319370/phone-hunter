@@ -38,6 +38,8 @@ const displayPhones = (phones) => {
       toggleSpinner("d-none", "d-block");
       toggleSearch("p-2", "d-none");
     });
+    document.getElementById("details-container").classList.remove("d-block");
+    document.getElementById("details-container").classList.add("d-none");
   }
   console.log(phones);
 };
@@ -67,8 +69,10 @@ const loadPhonesDetails = (id) => {
     .then((data) => displayPhonesDetails(data.data));
 };
 const displayPhonesDetails = (details) => {
+  document.getElementById("details-container").classList.add("d-block");
+  document.getElementById("details-container").classList.remove("d-none");
   const detailsContainer = document.getElementById("details-container");
-  detailsContainer.textContent = " ";
+  detailsContainer.textContent = "";
   const div = document.createElement("div");
   div.innerHTML = `
   <div class="card p-2 mx-auto" style="width: 18rem;">
