@@ -1,12 +1,11 @@
-// load phone
-const loadPhones = (searchText) => {
+//===================================== load phone===============================================
+const loadPhones = (searchText, quantity) => {
   const url = ` https://openapi.programming-hero.com/api/phones?search=${searchText}`;
   fetch(url)
     .then((response) => response.json())
-    .then((data) => displayPhones(data.data));
+    .then((data) => displayPhones(data.data.slice(0, quantity)));
 };
-
-// display phone
+//======================================= display phone============================================================
 const displayPhones = (phones) => {
   const phoneContainer = document.getElementById("phone-container");
   phoneContainer.textContent = " ";
@@ -17,6 +16,8 @@ const displayPhones = (phones) => {
     console.log("no result found");
     toggleSpinner("d-none", "d-block");
     toggleSearch("p-2", "d-none");
+    document.getElementById("details-container").classList.remove("d-block");
+    document.getElementById("details-container").classList.add("d-none");
   } else {
     toggleSpinner("d-block");
     phones?.forEach((phone) => {
@@ -41,16 +42,17 @@ const displayPhones = (phones) => {
     document.getElementById("details-container").classList.remove("d-block");
     document.getElementById("details-container").classList.add("d-none");
   }
-  console.log(phones);
+  console.log(phones.length);
 };
-// search phones
-const searchPhones = () => {
+//============================================================ search phones==========================================
+const searchPhones = (quantity) => {
   const searchText = document.getElementById("search-field").value;
   document.getElementById("search-field").value = "";
-  loadPhones(searchText);
+  loadPhones(searchText, quantity);
   toggleSpinner("d-block", "d-none");
   toggleSearch("d-none", "p-2");
 };
+// ===================================================spinner addding=========================================
 const toggleSpinner = (className1, className2) => {
   const spinnerDiv = document.getElementById("spinner");
   spinnerDiv.classList.add(className1);
@@ -61,13 +63,15 @@ const toggleSearch = (className1, className2) => {
   containerDiv.classList.add(className1);
   containerDiv.classList.remove(className2);
 };
-// ============================================Details===================================
+////////////////////////////////////////////////////==============================================/////////////////////////////////
+//==================================================Details====================================================
 const loadPhonesDetails = (id) => {
   const url = `https://openapi.programming-hero.com/api/phone/${id}`;
   fetch(url)
     .then((response) => response.json())
     .then((data) => displayPhonesDetails(data.data));
 };
+// =================================================display details============================================
 const displayPhonesDetails = (details) => {
   document.getElementById("details-container").classList.add("d-block");
   document.getElementById("details-container").classList.remove("d-none");
@@ -102,14 +106,14 @@ const displayPhonesDetails = (details) => {
                details.mainFeatures?.memory
              }</p>
         </div>
-        <div>
+        <div class="d-none" id="description">
           <p><span class="h5">Wlan:</span>${details.others?.WLAN}</p>
           <p><span class="h5">Bluetooth:</span>${details.others?.Bluetooth}</p>
           <p><span class="h5">GPS:</span>${details.others?.GPS}</p>
           <p><span class="h5">NFC:</span>${details.others?.NFC}</p>
           <p><span class="h5">Radio:</span>${details.others?.Radio}</p>
         </div>
-        <button onclick="" class="btn btn-outline-primary" type="button">
+        <button onclick="showDiscription()" class="btn btn-outline-primary" type="button">
           More..
         </button>
     </div>
@@ -117,6 +121,13 @@ const displayPhonesDetails = (details) => {
   detailsContainer.appendChild(div);
   console.log(details);
 };
+// ==========================================search details===========================================
 const searchPhonesDetails = (id) => {
   loadPhonesDetails(id);
+};
+// =====================================================show description=================================
+const showDiscription = () => {
+  const descriptionId = document.getElementById("description");
+  descriptionId.classList.add("d-block");
+  descriptionId.classList.remove("d-none");
 };
