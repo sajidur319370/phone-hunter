@@ -5,13 +5,20 @@ const loadPhones = (searchText, quantity) => {
     .then((response) => response.json())
     .then((data) => displayPhones(data.data.slice(0, quantity)));
 };
+//===================================== load phone all===============================================
+const loadPhonesAll = (searchText) => {
+  const url = ` https://openapi.programming-hero.com/api/phones?search=${searchText}`;
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => displayPhones(data.data));
+};
 //======================================= display phone============================================================
 const displayPhones = (phones) => {
   const phoneContainer = document.getElementById("phone-container");
   phoneContainer.textContent = " ";
   if (phones.length === 0) {
     const div = document.createElement("div");
-    div.innerText = "no result found";
+    div.innerHTML = `<h5 class="text-danger">No results found</h5>`;
     phoneContainer.appendChild(div);
     console.log("no result found");
     toggleSpinner("d-none", "d-block");
@@ -28,7 +35,7 @@ const displayPhones = (phones) => {
             <img src="${phone.image}" class="card-img-top mx-auto" style="width: 10rem; alt="..."/>
             <div class="card-body  mx-auto">
                 <h5 class="card-title text-secondary">${phone.phone_name}</h5>
-                <h6 class="card-text text-secondary">${phone.brand}</h6>
+                <h6 class="card-text">${phone.brand}</h6>
             </div>
             <button onclick="searchPhonesDetails('${phone.slug}')" class="btn btn-outline-primary" type="button">
                Description
@@ -42,13 +49,24 @@ const displayPhones = (phones) => {
     document.getElementById("details-container").classList.remove("d-block");
     document.getElementById("details-container").classList.add("d-none");
   }
-  console.log(phones.length);
+  const button = document.createElement("div");
+  button.innerHTML = ` 
+  <button onclick="searchPhones()" class="btn btn-outline-primary" type="button" id="see-more-button">
+    see more
+ </button>`;
+  if (phones.length <= 20 && phones.length > 1) {
+    phoneContainer.appendChild(button);
+  }
 };
 //============================================================ search phones==========================================
 const searchPhones = (quantity) => {
   const searchText = document.getElementById("search-field").value;
-  document.getElementById("search-field").value = "";
-  loadPhones(searchText, quantity);
+  if (quantity <= 20) {
+    loadPhones(searchText, quantity);
+  } else {
+    document.getElementById("search-field").value = "";
+    loadPhonesAll(searchText);
+  }
   toggleSpinner("d-block", "d-none");
   toggleSearch("d-none", "p-2");
 };
@@ -85,33 +103,45 @@ const displayPhonesDetails = (details) => {
         }" class="card-img-top mx-auto" style="width: 10rem;" alt="..." />
         <div class="card-body  mx-auto">
             <h5 class="card-title text-secondary">${details.name}</h5>
-            <h6 class="card-text text-secondary">${
-              details.releaseDate ? details.releaseDate : "Not yet released"
+            <h6 class="card-text text-success">${
+              details.releaseDate
+                ? details.releaseDate
+                : `<span class="h6 text-danger">Not yet released</span>`
             }</h6>
         </div>
         <div>
-            <p><span class="h5">Storage:</span>${
+            <p><span class="h5 text-success">Storage: </span>${
               details.mainFeatures?.storage
             }</p>
-            <p><span class="h5">Sensors:</span>${
+            <p><span class="h5 text-success">Sensors: </span>${
               details.mainFeatures?.sensors
             }</p>
-            <p><span class="h5">Display Size:</span>${
+            <p><span class="h5 text-success">Display Size: </span>${
               details.mainFeatures?.displaySize
             }  </p>
-            <p><span class="h5">Chipset:</span>${
+            <p><span class="h5 text-success">Chipset: </span>${
               details.mainFeatures?.chipSet
             }</p>
-             <p><span class="h5">Memory:</span>${
+             <p><span class="h5  text-success">Memory: </span>${
                details.mainFeatures?.memory
              }</p>
         </div>
         <div class="d-none" id="description">
-          <p><span class="h5">Wlan:</span>${details.others?.WLAN}</p>
-          <p><span class="h5">Bluetooth:</span>${details.others?.Bluetooth}</p>
-          <p><span class="h5">GPS:</span>${details.others?.GPS}</p>
-          <p><span class="h5">NFC:</span>${details.others?.NFC}</p>
-          <p><span class="h5">Radio:</span>${details.others?.Radio}</p>
+          <p><span class="h5 text-success">Wlan: </span>${
+            details.others?.WLAN
+          }</p>
+          <p><span class="h5 text-success">Bluetooth: </span>${
+            details.others?.Bluetooth
+          }</p>
+          <p><span class="h5 text-success">GPS: </span>${
+            details.others?.GPS
+          }</p>
+          <p><span class="h5 text-success">NFC: </span>${
+            details.others?.NFC
+          }</p>
+          <p><span class="h5 text-success">Radio: </span>${
+            details.others?.Radio
+          }</p>
         </div>
         <button onclick="showDiscription()" class="btn btn-outline-primary" type="button">
           More..
@@ -119,7 +149,6 @@ const displayPhonesDetails = (details) => {
     </div>
   `;
   detailsContainer.appendChild(div);
-  console.log(details);
 };
 // ==========================================search details===========================================
 const searchPhonesDetails = (id) => {
