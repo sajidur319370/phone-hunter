@@ -75,7 +75,7 @@ const displayPhonesDetails = (details) => {
   detailsContainer.textContent = "";
   const div = document.createElement("div");
   div.innerHTML = `
-  <div class="card p-2 mx-auto" style="width: 18rem;">
+  <div class="card p-2 mx-auto">
         <img src="${
           details.image
         }" class="card-img-top mx-auto" style="width: 10rem;" alt="..." />
@@ -86,12 +86,28 @@ const displayPhonesDetails = (details) => {
             }</h6>
         </div>
         <div>
-          <p><span class="h5">Storage:</span>${details.mainFeatures.storage}</p>
-          <p><span class="h5">Display Size:</span>${
-            details.mainFeatures.displaySize
-          }</p>
-          <p><span class="h5">Chipset:</span>${details.mainFeatures.chipSet}</p>
-          <p><span class="h5">Memory:</span>${details.mainFeatures.memory}</p>
+            <p><span class="h5">Storage:</span>${
+              details.mainFeatures?.storage
+            }</p>
+            <p><span class="h5">Sensors:</span>${
+              details.mainFeatures?.sensors
+            }</p>
+            <p><span class="h5">Display Size:</span>${
+              details.mainFeatures?.displaySize
+            }  </p>
+            <p><span class="h5">Chipset:</span>${
+              details.mainFeatures?.chipSet
+            }</p>
+             <p><span class="h5">Memory:</span>${
+               details.mainFeatures?.memory
+             }</p>
+        </div>
+        <div>
+          <p><span class="h5">Wlan:</span>${details.others?.WLAN}</p>
+          <p><span class="h5">Bluetooth:</span>${details.others?.Bluetooth}</p>
+          <p><span class="h5">GPS:</span>${details.others?.GPS}</p>
+          <p><span class="h5">NFC:</span>${details.others?.NFC}</p>
+          <p><span class="h5">Radio:</span>${details.others?.Radio}</p>
         </div>
         <button onclick="" class="btn btn-outline-primary" type="button">
           More..
