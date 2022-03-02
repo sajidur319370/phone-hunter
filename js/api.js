@@ -44,6 +44,7 @@ const displayPhones = (phones) => {
 // search phones
 const searchPhones = () => {
   const searchText = document.getElementById("search-field").value;
+  document.getElementById("search-field").value = "";
   loadPhones(searchText);
   toggleSpinner("d-block", "d-none");
   toggleSearch("d-none", "p-2");
@@ -58,3 +59,5 @@ const toggleSearch = (className1, className2) => {
   containerDiv.classList.add(className1);
   containerDiv.classList.remove(className2);
 };
+
+// search phone details
