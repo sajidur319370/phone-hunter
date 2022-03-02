@@ -29,7 +29,7 @@ const displayPhones = (phones) => {
                 <h5 class="card-title text-secondary">${phone.phone_name}</h5>
                 <h6 class="card-text text-secondary">${phone.brand}</h6>
             </div>
-            <button onclick="searchPhonesDetails()" class="btn btn-outline-primary" type="button" id="details-button">
+            <button onclick="searchPhonesDetails('${phone.slug}')" class="btn btn-outline-primary" type="button">
                Description
             </button>
         </div>
@@ -59,5 +59,44 @@ const toggleSearch = (className1, className2) => {
   containerDiv.classList.add(className1);
   containerDiv.classList.remove(className2);
 };
-
-// search phone details
+// ============================================Details===================================
+const loadPhonesDetails = (id) => {
+  const url = `https://openapi.programming-hero.com/api/phone/${id}`;
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => displayPhonesDetails(data.data));
+};
+const displayPhonesDetails = (details) => {
+  const detailsContainer = document.getElementById("details-container");
+  detailsContainer.textContent = " ";
+  const div = document.createElement("div");
+  div.innerHTML = `
+  <div class="card p-2 mx-auto" style="width: 18rem;">
+        <img src="${
+          details.image
+        }" class="card-img-top mx-auto" style="width: 10rem;" alt="..." />
+        <div class="card-body  mx-auto">
+            <h5 class="card-title text-secondary">${details.name}</h5>
+            <h6 class="card-text text-secondary">${
+              details.releaseDate ? details.releaseDate : "Not yet released"
+            }</h6>
+        </div>
+        <div>
+          <p><span class="h5">Storage:</span>${details.mainFeatures.storage}</p>
+          <p><span class="h5">Display Size:</span>${
+            details.mainFeatures.displaySize
+          }</p>
+          <p><span class="h5">Chipset:</span>${details.mainFeatures.chipSet}</p>
+          <p><span class="h5">Memory:</span>${details.mainFeatures.memory}</p>
+        </div>
+        <button onclick="" class="btn btn-outline-primary" type="button">
+          More..
+        </button>
+    </div>
+  `;
+  detailsContainer.appendChild(div);
+  console.log(details);
+};
+const searchPhonesDetails = (id) => {
+  loadPhonesDetails(id);
+};
